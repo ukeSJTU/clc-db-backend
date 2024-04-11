@@ -9,3 +9,19 @@ class OverviewSerializer(serializers.ModelSerializer):
     class Meta:
         model = Molecule
         fields = ["name", "cas_id", "class_type"]
+
+
+class DownloadSerializer(serializers.ModelSerializer):
+    class_type = CategorySerializer(many=True, read_only=True)
+    smiles_type = SmilesSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Molecule
+        fields = [
+            "name",
+            "cas_id",
+            "class_type",
+            "smiles",
+            "smiles_type",
+            "remark",
+        ]
