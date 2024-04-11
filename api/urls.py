@@ -8,6 +8,8 @@ router = DefaultRouter()
 router.register(r"overview/card", OverviewCardViewSet, basename="overview-card")
 router.register(r"overview/table", OverviewTableView, basename="overview-table")
 
+router.register(r"download/molecules", DownloadMoleculesViewSet, basename="molecule")
+router.register(r"download/classes", DownloadClassesViewSet, basename="class")
 
 urlpatterns = [
     path("", include(router.urls)),
