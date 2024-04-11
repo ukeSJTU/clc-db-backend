@@ -1,5 +1,12 @@
 .vscode/
 
+# avoid hidden macOS files
+.DS_Store
+
+# avoid data
+*.csv
+*.xlsx
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
