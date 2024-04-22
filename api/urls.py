@@ -11,6 +11,9 @@ router.register(r"overview/table", OverviewTableView, basename="overview-table")
 router.register(r"download/molecules", DownloadMoleculesViewSet, basename="molecule")
 router.register(r"download/classes", DownloadClassesViewSet, basename="class")
 
+router.register(r"search/molecules", MoleculeViewSet, basename="search")
+
+
 urlpatterns = [
     path("", include(router.urls)),
 ]
