@@ -1,6 +1,23 @@
 import sqlite3
 import pandas as pd
 
+CLEAR_DATA = True  # Clear all data in the database before importing new data
+if (
+    CLEAR_DATA
+    and input("Are you sure you want to clear all data in the database? (y/n): ") == "y"
+):
+    # clear the data but leave the column names
+    conn = sqlite3.connect("db.sqlite3")
+    cursor = conn.cursor()
+    cursor.execute("DELETE FROM core_category")
+    cursor.execute("DELETE FROM core_molecule")
+    cursor.execute("DELETE FROM core_molecule_class_type")
+    cursor.execute("DELETE FROM core_molecule_smiles_type")
+    cursor.execute("DELETE FROM core_smile")
+    conn.commit()
+    conn.close()
+
+
 # Path to the SQLite database
 database_path = "db.sqlite3"
 
