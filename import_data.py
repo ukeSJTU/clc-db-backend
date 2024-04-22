@@ -33,6 +33,15 @@ if 1 in task_id:
             [cat.strip() for cat in category_list.split(delim) if cat != "无"]
         )
 
+        if category_list == "无":
+            # add a default category
+            unique_categories.add("无-default")
+
+    # Create the table if it doesn't exist
+    cursor.execute(
+        f"CREATE TABLE IF NOT EXISTS {table_name} (id INTEGER PRIMARY KEY, name TEXT)"
+    )
+
     # Insert unique categories into core_category table and remember their IDs
     category_to_id = {}
     for idx, category in enumerate(unique_categories, start=1):
@@ -51,6 +60,11 @@ if 2 in task_id:
         unique_smiles.update(
             [smile.strip() for smile in smile_list.split(delim) if smile != "无"]
         )
+
+    # Create the table if it doesn't exist
+    cursor.execute(
+        f"CREATE TABLE IF NOT EXISTS {table_name} (id INTEGER PRIMARY KEY, smile TEXT)"
+    )
 
     # Insert unique SMILE types into core_smile table and remember their IDs
     smile_to_id = {}
@@ -75,6 +89,17 @@ if 3 in task_id:
         "备注": "remark",
     }
 
+    # Create the table if it doesn't exist
+    cursor.execute(
+        f"CREATE TABLE IF NOT EXISTS {table_name} (id INTEGER PRIMARY KEY, name TEXT, cas_id TEXT, url TEXT, pubchem_url TEXT, smiles TEXT, remark TEXT)"
+    )
+    cursor.execute(
+        f"CREATE TABLE IF NOT EXISTS {category_table_name} (id INTEGER PRIMARY KEY, molecule_id INTEGER, category_id INTEGER)"
+    )
+    cursor.execute(
+        f"CREATE TABLE IF NOT EXISTS {smile_table_name} (id INTEGER PRIMARY KEY, molecule_id INTEGER, smile_id INTEGER)"
+    )
+
     for idx, row in df.iterrows():
         # Inserting data into core_molecule
         cursor.execute(
@@ -92,6 +117,11 @@ if 3 in task_id:
 
         # Inserting data into core_molecule_class_type
         categories = [cat.strip() for cat in row["类别"].split(delim) if cat != "无"]
+
+        if not categories:
+            # add a default category
+            categories.append("无-default")
+
         for category in categories:
             cursor.execute(
                 f"INSERT INTO {category_table_name} (molecule_id, category_id) VALUES (?, ?)",
