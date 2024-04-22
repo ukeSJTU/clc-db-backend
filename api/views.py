@@ -5,7 +5,7 @@ from rest_framework import filters, generics, pagination, viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
-from .serializers import OverviewSerializer, DownloadSerializer
+from .serializers import OverviewSerializer, DownloadSerializer, MoleculeSerializer
 
 
 # cards grid layout with pagination
@@ -52,3 +52,11 @@ class DownloadMoleculesViewSet(viewsets.ModelViewSet):
         queryset = self.get_queryset()  # You can filter queryset here if you need
         serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data)
+
+
+# api for fetching (search api) single molecule data
+class MoleculeViewSet(viewsets.ModelViewSet):
+    queryset = Molecule.objects.all()
+    serializer_class = MoleculeSerializer
+    filter_backends = [filters.SearchFilter]
+    search_fields = ["cas_id"]  # Add other fields here to search across keys
