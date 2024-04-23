@@ -4,6 +4,8 @@ from django.db.models import Prefetch
 from rest_framework import filters, generics, pagination, viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
+from .filters import MoleculeFilter
+from django_filters.rest_framework import DjangoFilterBackend
 
 from .serializers import OverviewSerializer, DownloadSerializer, MoleculeSerializer
 
@@ -55,8 +57,16 @@ class DownloadMoleculesViewSet(viewsets.ModelViewSet):
 
 
 # api for fetching (search api) single molecule data
+# class MoleculeViewSet(viewsets.ModelViewSet):
+#     queryset = Molecule.objects.all()
+#     serializer_class = MoleculeSerializer
+#     filter_backends = [filters.SearchFilter]
+#     search_fields = ["cas_id"]  # Add other fields here to search across keys
+
+
+# api for searching with multiple query params single molecule data
 class MoleculeViewSet(viewsets.ModelViewSet):
     queryset = Molecule.objects.all()
     serializer_class = MoleculeSerializer
-    filter_backends = [filters.SearchFilter]
-    search_fields = ["cas_id"]  # Add other fields here to search across keys
+    filter_backends = (DjangoFilterBackend,)
+    filterset_class = MoleculeFilter

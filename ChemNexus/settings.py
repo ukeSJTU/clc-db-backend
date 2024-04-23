@@ -33,6 +33,7 @@ ALLOWED_HOSTS = ["www.ukehome.top", "127.0.0.1"]
 INSTALLED_APPS = [
     "rest_framework",
     "corsheaders",
+    "django_filters",
     "core.apps.CoreConfig",
     "api.apps.ApiConfig",
     "django.contrib.admin",
