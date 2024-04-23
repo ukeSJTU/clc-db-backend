@@ -2,6 +2,7 @@ import django_filters
 from core.models import Molecule
 
 
+# support for filtering with django_filters
 class MoleculeFilter(django_filters.FilterSet):
     name = django_filters.CharFilter(field_name="name", lookup_expr="icontains")
     cas_id = django_filters.CharFilter(field_name="cas_id", lookup_expr="icontains")
