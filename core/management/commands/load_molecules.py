@@ -28,7 +28,9 @@ class Command(BaseCommand):
                 cas_id=row["CAS号"],
                 defaults={
                     "name": row.get("Name", ""),
-                    "pubchem_cid": int(row.get("PubChem CID", "")),
+                    "pubchem_cid": str(
+                        int(row.get("PubChem CID", 0))
+                    ),  # Convert to int, if not exist set to 0; then convert to string because PubChem CID is CharField
                     "url": row.get("URL", ""),
                     "pubchem_url": row.get("PubChemURL", ""),
                     "smiles": row.get("SMILES", ""),
