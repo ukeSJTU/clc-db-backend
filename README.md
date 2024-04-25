@@ -7,3 +7,11 @@ brew serices start mysql
 ==> Successfully started `mysql` (label: homebrew.mxcl.mysql)
 mysql
 ```
+
+## To load data
+
+```bash
+python manage.py makemigrations
+python manage.py migrate
+python manage.py load_molecules /ChemNexus/data/merged.csv
+```
