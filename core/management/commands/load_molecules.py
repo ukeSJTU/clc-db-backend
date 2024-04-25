@@ -9,10 +9,29 @@ import pandas as pd
 class Command(BaseCommand):
     help = "Load molecule data into the database"
 
+    fill_values = {
+        "PubChem CID": 0,  # 对于 'PubChem CID' 列，用 0 填充
+        "URL": "",  # 对于 'URL' 列，用空字符串填充
+        "SMILES": "N/A",  # 对于 'SMILES' 列，用 'N/A' 填充
+        "SMILES_IUPAC": "N/A",  # 对于 'SMILES_IUPAC' 列，用 'N/A' 填充
+        "MF": "N/A",  # 对于 'MF' 列，用 'N/A' 填充
+        "MW": 0.0,  # 对于 'MW' 列，用 0 填充
+        "备注": "N/A",  # 对于 '备注' 列，用 'N/A' 填充
+        "手性种类": "无",  # 对于 '手性种类' 列，用 '无' 填充
+    }
+
+    def add_arguments(self, parser):
+        # Adding an optional argument to specify the path to the CSV file
+        parser.add_argument(
+            "-p",
+            "--path",
+            type=str,
+            help="Path to the CSV file",
+        )
+
     def handle(self, *args, **kwargs):
-        df = pd.read_csv(
-            "/Users/uke/Downloads/all_data/merged.csv"
-        )  # Load your dataframe as needed
+        csv_path = kwargs["path"]  # Load your dataframe as needed
+        df = pd.read_csv(csv_path).fillna(self.fill_values)
 
         categories = {
             name: Category.objects.get_or_create(name=name)[0]
