@@ -43,3 +43,34 @@ class MoleculeSerializer(serializers.ModelSerializer):
             "smiles_type",
             "remark",
         ]
+
+
+class CardOverviewMoleculeSerializer(serializers.ModelSerializer):
+    class_type = CategorySerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Molecule
+        fields = [
+            "name",
+            "cas_id",
+            "class_type",
+            "molecule_formula",
+            "molecular_weight",
+        ]
+
+
+class SheetOverviewMoleculeSerializer(serializers.ModelSerializer):
+    class_type = CategorySerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Molecule
+        fields = ["name", "cas_id", "class_type"]
+
+
+class CompleteMoleculeSerializer(serializers.ModelSerializer):
+    class_type = CategorySerializer(many=True, read_only=True)
+    smiles_type = SmilesSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Molecule
+        fields = "__all__"

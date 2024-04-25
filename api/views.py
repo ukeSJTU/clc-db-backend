@@ -7,13 +7,19 @@ from rest_framework.response import Response
 from .filters import MoleculeFilter
 from django_filters.rest_framework import DjangoFilterBackend
 
-from .serializers import OverviewSerializer, DownloadSerializer, MoleculeSerializer
+from .serializers import (
+    OverviewSerializer,
+    DownloadSerializer,
+    MoleculeSerializer,
+    CompleteMoleculeSerializer,
+    CardOverviewMoleculeSerializer,
+)
 
 
 # cards grid layout with pagination
 class OverviewCardViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Molecule.objects.all()
-    serializer_class = OverviewSerializer
+    serializer_class = CardOverviewMoleculeSerializer
     pagination_class = OverviewPagination
 
 
