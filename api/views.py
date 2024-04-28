@@ -69,14 +69,25 @@ class DownloadClassesViewSet(viewsets.ModelViewSet):
 class DownloadMoleculesViewSet(viewsets.ModelViewSet):
     queryset = Molecule.objects.all()
     serializer_class = DownloadSerializer
+    pagination_class = DownloadClassesPagination  # Reuse the same pagination settings
     filter_backends = [filters.SearchFilter]
-    search_fields = ["cas_id"]  # TODO: Add other fields here to search across keys
+    search_fields = ["cas_id"]  # Extend search fields as needed
 
     @action(detail=False, methods=["get"], url_path="all")
     def all_molecules(self, request):
-        queryset = self.get_queryset()  # You can filter queryset here if you need
-        serializer = self.get_serializer(queryset, many=True)
-        return Response(serializer.data)
+        queryset = self.get_queryset()  # You can apply filters here
+        paginated_queryset = self.paginate_queryset(
+            queryset
+        )  # Apply pagination to queryset
+
+        if paginated_queryset is not None:
+            serializer = self.get_serializer(paginated_queryset, many=True)
+            return self.get_paginated_response(
+                serializer.data
+            )  # Return paginated response
+        else:
+            # Handle the case if pagination is not applicable or error
+            return Response({"error": "Pagination error or no molecules found."})
 
 
 # api for fetching (search api) single molecule data
