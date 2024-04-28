@@ -13,6 +13,7 @@ router.register(r"download/classes", DownloadClassesViewSet, basename="class")
 
 router.register(r"search/molecules", MoleculeViewSet, basename="search")
 
+router.register(r"statistics", StatisticsViewSet, basename="statistics")
 
 urlpatterns = [
     path("", include(router.urls)),
