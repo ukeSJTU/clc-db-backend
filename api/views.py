@@ -73,7 +73,7 @@ class DownloadMoleculesViewSet(viewsets.ModelViewSet):
 # api for searching with multiple query params single molecule data
 class MoleculeViewSet(viewsets.ModelViewSet):
     queryset = Molecule.objects.all()
-    serializer_class = MoleculeSerializer
+    serializer_class = CardOverviewMoleculeSerializer  # TODO: this serves search api, but should have its own serializer
     filter_backends = (DjangoFilterBackend,)
     filterset_class = MoleculeFilter
 
