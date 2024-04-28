@@ -76,3 +76,17 @@ class MoleculeViewSet(viewsets.ModelViewSet):
     serializer_class = MoleculeSerializer
     filter_backends = (DjangoFilterBackend,)
     filterset_class = MoleculeFilter
+
+
+# api for statistics
+class StatisticsViewSet(viewsets.ViewSet):
+    def list(self, request):
+        total_molecules = Molecule.objects.count()
+        total_categories = Category.objects.count()
+
+        return Response(
+            {
+                "total_molecules": total_molecules,
+                "total_categories": total_categories,
+            }
+        )
