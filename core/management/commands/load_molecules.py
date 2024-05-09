@@ -30,17 +30,22 @@ class Command(BaseCommand):
         )
 
     def handle(self, *args, **kwargs):
-        csv_path = kwargs["path"]  # Load your dataframe as needed
+        csv_path = kwargs["path"]
         df = pd.read_csv(csv_path).fillna(self.fill_values)
 
-        categories = {
-            name: Category.objects.get_or_create(name=name)[0]
-            for name in df["类别"].unique()
-        }
-        smiles_types = {
-            smile: Smile.objects.get_or_create(smile=smile)[0]
-            for smile in df["手性种类"].unique()
-        }
+        # Create or get categories and smiles types from the dataframe
+        category_objs = {}
+        for category_list in df["类别"].unique():
+            categories = [cat.strip() for cat in category_list.split("、")]
+            for category in categories:
+                if category not in category_objs:
+                    category_objs[category], _ = Category.objects.get_or_create(
+                        name=category
+                    )
+
+        smile_objs = {}
+        for smile in df["手性种类"].unique():
+            smile_objs[smile], _ = Smile.objects.get_or_create(smile=smile)
 
         for idx, row in df.iterrows():
             molecule, created = Molecule.objects.update_or_create(
@@ -60,8 +65,13 @@ class Command(BaseCommand):
                 },
             )
             # Assign categories and smile types
-            molecule.class_type.set([categories[row["类别"]]])
-            molecule.smiles_type.set([smiles_types[row["手性种类"]]])
+            # molecule.class_type.set([categories[row["类别"]]])
+            categories = [cat.strip() for cat in row["类别"].split("、")]
+            molecule.class_type.set(
+                [category_objs[cat] for cat in categories if cat in category_objs]
+            )
+            molecule.smiles_type.set([smile_objs[row["手性种类"]]])
+            # molecule.smiles_type.set([smiles_types[row["手性种类"]]])
 
             molecule.save()
             self.stdout.write(
