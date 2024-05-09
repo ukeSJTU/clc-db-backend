@@ -9,10 +9,13 @@ class MoleculeFilter(django_filters.FilterSet):
     name = django_filters.CharFilter(field_name="name", lookup_expr="icontains")
     cas_id = django_filters.CharFilter(field_name="cas_id", lookup_expr="icontains")
     smiles = django_filters.CharFilter(field_name="smiles", method="smiles_search")
+    class_type = django_filters.CharFilter(
+        field_name="class_type__name", lookup_expr="icontains"
+    )
 
     class Meta:
         model = Molecule
-        fields = ["name", "cas_id", "smiles"]
+        fields = ["name", "cas_id", "smiles", "class_type"]
 
     def smiles_search(self, queryset, name, value):
         # Convert the input SMILES string to an RDKit molecule
