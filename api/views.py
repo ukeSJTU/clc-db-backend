@@ -19,28 +19,32 @@ from .serializers import (
 # cards grid layout with pagination
 class OverviewCardViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Molecule.objects.all()
-    serializer_class = CardOverviewMoleculeSerializer
+    serializer_class = CompleteMoleculeSerializer
+    # serializer_class = CardOverviewMoleculeSerializer
     pagination_class = OverviewPagination
 
 
 # table layout with pagination
 class OverviewTableView(viewsets.ReadOnlyModelViewSet):
     queryset = Molecule.objects.all()
-    serializer_class = OverviewSerializer
+    serializer_class = CompleteMoleculeSerializer
+    # serializer_class = OverviewSerializer
     pagination_class = OverviewPagination
 
 
 # download api based on molecule's class_type
 class DownloadClassesViewSet(viewsets.ModelViewSet):
     queryset = Molecule.objects.all()
-    serializer_class = DownloadSerializer
+    serializer_class = CompleteMoleculeSerializer
+    # serializer_class = DownloadSerializer
     pagination_class = DownloadClassesPagination
 
     @action(detail=False, methods=["get"], url_path="all")
     def all_classes(self, request):
         queryset = Molecule.objects.all()
 
-    serializer_class = DownloadSerializer
+    serializer_class = CompleteMoleculeSerializer
+    # serializer_class = DownloadSerializer
     pagination_class = DownloadClassesPagination
 
     @action(detail=False, methods=["get"], url_path="all")
@@ -68,7 +72,8 @@ class DownloadClassesViewSet(viewsets.ModelViewSet):
 # download api based on molecule's cas_id
 class DownloadMoleculesViewSet(viewsets.ModelViewSet):
     queryset = Molecule.objects.all()
-    serializer_class = DownloadSerializer
+    serializer_class = CompleteMoleculeSerializer
+    # serializer_class = DownloadSerializer
     pagination_class = DownloadClassesPagination  # Reuse the same pagination settings
     filter_backends = [filters.SearchFilter]
     search_fields = ["cas_id"]  # Extend search fields as needed
@@ -101,9 +106,12 @@ class DownloadMoleculesViewSet(viewsets.ModelViewSet):
 # api for searching with multiple query params single molecule data
 class MoleculeViewSet(viewsets.ModelViewSet):
     queryset = Molecule.objects.all()
-    serializer_class = CardOverviewMoleculeSerializer  # TODO: this serves search api, but should have its own serializer
+    serializer_class = CompleteMoleculeSerializer  # TODO: this serves search api, but should have its own serializer
+    # serializer_class = CardOverviewMoleculeSerializer  # TODO: this serves search api, but should have its own serializer
     filter_backends = (DjangoFilterBackend,)
     filterset_class = MoleculeFilter
+
+    pagination_class = OverviewPagination
 
 
 # api for statistics
