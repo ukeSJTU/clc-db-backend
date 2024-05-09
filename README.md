@@ -13,5 +13,5 @@ mysql
 ```bash
 python manage.py makemigrations
 python manage.py migrate
-python manage.py load_molecules /ChemNexus/data/merged.csv
+python manage.py load_molecules -p /ChemNexus/data/merged.csv
 ```
