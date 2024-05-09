@@ -1,4 +1,4 @@
-from core.models import Molecule
+from core.models import Molecule, Category
 from core.serializers import CategorySerializer, SmilesSerializer
 from rest_framework import serializers
 
@@ -74,3 +74,10 @@ class CompleteMoleculeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Molecule
         fields = "__all__"
+
+
+# Serializer to return category data
+class CategorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Category
+        fields = ["id", "name"]
