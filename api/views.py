@@ -13,6 +13,7 @@ from .serializers import (
     MoleculeSerializer,
     CompleteMoleculeSerializer,
     CardOverviewMoleculeSerializer,
+    CategorySerializer,
 )
 
 
@@ -112,6 +113,18 @@ class MoleculeViewSet(viewsets.ModelViewSet):
     filterset_class = MoleculeFilter
 
     pagination_class = OverviewPagination
+
+
+class CategoryViewSet(viewsets.ViewSet):
+    def list(self, request):
+        categories = Category.objects.all()
+        serializer = CategorySerializer(categories, many=True)
+        return Response(serializer.data)
+
+    def retrieve(self, request, pk=None):
+        molecules = Molecule.objects.filter(class_type__id=pk)
+        serialized_molecules = MoleculeSerializer(molecules, many=True)
+        return Response(serialized_molecules.data)
 
 
 # api for statistics
