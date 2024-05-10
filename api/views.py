@@ -199,3 +199,17 @@ class SmileTypeDistributionViewSet(viewsets.ViewSet):
 
     def list(self, request):
         return Response(self.get_smile_type_distribution())
+
+
+class ClassTypeDistributionViewSet(viewsets.ViewSet):
+    def get_class_type_distribution(self):
+        distribution_data = list(
+            Molecule.objects.values("class_type__name")
+            .annotate(count=Count("id"))
+            .order_by()
+        )
+        return distribution_data
+
+    def list(self, request):
+        distribution_data = self.get_class_type_distribution()
+        return Response(distribution_data)
