@@ -182,3 +182,20 @@ class WeightDistributionViewSet(viewsets.ViewSet):
 
     def list(self, request):
         return Response(self.weight_distribution())
+
+
+from django.db.models import Count
+
+
+class SmileTypeDistributionViewSet(viewsets.ViewSet):
+    def get_smile_type_distribution(self):
+        distribution_data = list(
+            Molecule.objects.values("smiles_type__smile")
+            .annotate(count=Count("id"))
+            .order_by()
+        )
+
+        return distribution_data
+
+    def list(self, request):
+        return Response(self.get_smile_type_distribution())
