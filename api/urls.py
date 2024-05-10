@@ -15,6 +15,7 @@ router.register(r"search/molecules", MoleculeViewSet, basename="search")
 
 router.register(r"statistics", StatisticsViewSet, basename="statistics")
 router.register(r"stats/weights", WeightDistributionViewSet, basename="weight-stats")
+router.register(r"stats/smiles", SmileTypeDistributionViewSet, basename="smiles-stats")
 router.register(r"categories", CategoryViewSet, basename="category")
 
 urlpatterns = [
