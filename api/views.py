@@ -139,3 +139,46 @@ class StatisticsViewSet(viewsets.ViewSet):
                 "total_categories": total_categories,
             }
         )
+
+
+# api for weight distribution stats
+class WeightDistributionViewSet(viewsets.ViewSet):
+    def weight_distribution(self):
+        weight_ranges = ["0-100", "100-200", "200-300", "300-400", "400-500", "500+"]
+
+        weight_bins = {
+            "0-100": 0,
+            "100-200": 0,
+            "200-300": 0,
+            "300-400": 0,
+            "400-500": 0,
+            "500+": 0,
+        }
+
+        # Adjust weights and classify into bins
+        for molecule in Molecule.objects.all():
+            weight = molecule.molecular_weight
+            if weight is not None:
+                if 0 < weight < 100:
+                    weight_bins["0-100"] += 1
+                elif weight < 200:
+                    weight_bins["100-200"] += 1
+                elif weight < 300:
+                    weight_bins["200-300"] += 1
+                elif weight < 400:
+                    weight_bins["300-400"] += 1
+                elif weight < 500:
+                    weight_bins["400-500"] += 1
+                else:
+                    weight_bins["500+"] += 1
+
+        # Prepare data for the chart
+        data = {
+            "labels": weight_ranges,
+            "values": [weight_bins[range_] for range_ in weight_ranges],
+        }
+
+        return data
+
+    def list(self, request):
+        return Response(self.weight_distribution())
