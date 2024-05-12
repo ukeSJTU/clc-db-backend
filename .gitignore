@@ -1,4 +1,9 @@
 .vscode/
+data/
+
+# ignore static folders
+static/
+static-assets/
 
 # avoid hidden macOS files
 .DS_Store
