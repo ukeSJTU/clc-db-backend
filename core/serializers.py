@@ -1,6 +1,6 @@
 from rest_framework import serializers, viewsets
 
-from .models import Category, Smile
+from .models import Category, Chirality
 
 
 class CategorySerializer(serializers.ModelSerializer):
@@ -11,5 +11,5 @@ class CategorySerializer(serializers.ModelSerializer):
 
 class SmilesSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Smile
+        model = Chirality
         fields = ["smile"]

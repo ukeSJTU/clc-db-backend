@@ -9,12 +9,12 @@ class Category(models.Model):
         return self.name
 
 
-# Define the Smile model to store the smile representation of the molecule
-class Smile(models.Model):
-    smile = models.CharField(max_length=100)
+# Define the Chirality model to store the chirality of the molecule
+class Chirality(models.Model):
+    name = models.CharField(max_length=100)
 
     def __str__(self):
-        return self.smile
+        return self.name
 
 
 class Molecule(models.Model):
@@ -39,7 +39,7 @@ class Molecule(models.Model):
     smiles = models.CharField(max_length=SMILE_MAX_LENGTH)
 
     chirality = models.ManyToManyField(
-        Smile, related_name="molecules"
+        Chirality, related_name="molecules"
     )  # smile type of the molecule, metadata is in chinese format
 
     description = models.TextField(
