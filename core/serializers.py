@@ -9,7 +9,7 @@ class CategorySerializer(serializers.ModelSerializer):
         fields = ["name"]
 
 
-class SmilesSerializer(serializers.ModelSerializer):
+class ChiralitySerializer(serializers.ModelSerializer):
     class Meta:
         model = Chirality
-        fields = ["smile"]
+        fields = ["name"]
