@@ -7,7 +7,7 @@ from rdkit.Chem import rdchem, AllChem
 # support for filtering with django_filters
 class MoleculeFilter(django_filters.FilterSet):
     name = django_filters.CharFilter(field_name="name", lookup_expr="icontains")
-    cas_id = django_filters.CharFilter(field_name="cas_id", lookup_expr="icontains")
+    cas_id = django_filters.CharFilter(field_name="cas_id", method="filter_cas_ids")
     smiles = django_filters.CharFilter(field_name="smiles", method="smiles_search")
     class_type = django_filters.CharFilter(
         field_name="class_type__name", lookup_expr="icontains"
@@ -16,6 +16,10 @@ class MoleculeFilter(django_filters.FilterSet):
     class Meta:
         model = Molecule
         fields = ["name", "cas_id", "smiles", "class_type"]
+
+    def filter_cas_ids(self, queryset, name, value):
+        cas_ids = [cas_id.strip() for cas_id in value.split(",")]
+        return queryset.filter(cas_id__in=cas_ids)
 
     def smiles_search(self, queryset, name, value):
         # Convert the input SMILES string to an RDKit molecule
