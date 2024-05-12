@@ -28,9 +28,9 @@ class Molecule(models.Model):
 
     cas_id = models.CharField(max_length=20, unique=True)  # this should be unique
 
-    class_type = models.ManyToManyField(
+    category = models.ManyToManyField(
         Category, related_name="molecules"
-    )  # class type of the molecule, metadata is in chinese format
+    )  # category of the molecule
 
     pubchem_url = models.URLField(
         blank=True, null=True
@@ -40,7 +40,7 @@ class Molecule(models.Model):
 
     chirality = models.ManyToManyField(
         Chirality, related_name="molecules"
-    )  # smile type of the molecule, metadata is in chinese format
+    )  # smile type of the molecule
 
     description = models.TextField(
         blank=True,

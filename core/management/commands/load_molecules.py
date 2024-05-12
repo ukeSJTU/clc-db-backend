@@ -77,7 +77,7 @@ class Command(BaseCommand):
             )
 
             categories = [cat.strip() for cat in row["Category"].split("、")]
-            molecule.class_type.set(
+            molecule.category.set(
                 [category_objs[cat] for cat in categories if cat in category_objs]
             )
 
