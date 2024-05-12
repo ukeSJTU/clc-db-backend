@@ -5,13 +5,13 @@ from .views import *
 
 router = DefaultRouter()
 
-router.register(r"overview/card", OverviewCardViewSet, basename="overview-card")
-router.register(r"overview/table", OverviewTableView, basename="overview-table")
+router.register(r"overview/card", OverviewViewSet, basename="overview-card")
+router.register(r"overview/table", OverviewViewSet, basename="overview-table")
 
-router.register(r"download/molecules", DownloadMoleculesViewSet, basename="molecule")
-router.register(r"download/classes", DownloadClassesViewSet, basename="class")
+router.register(r"download/molecules", DownloadViewSet, basename="molecule")
+router.register(r"download/classes", DownloadViewSet, basename="class")
 
-router.register(r"search/molecules", MoleculeViewSet, basename="search")
+router.register(r"search/molecules", SearchViewSet, basename="search")
 
 router.register(r"statistics", StatisticsViewSet, basename="statistics")
 router.register(r"stats/weights", WeightDistributionViewSet, basename="weight-stats")
