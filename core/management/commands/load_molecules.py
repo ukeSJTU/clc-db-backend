@@ -8,18 +8,16 @@ class Command(BaseCommand):
 
     fill_values = {
         "PubChem CID": 0,
-        "URL": "",
         "SMILES": "N/A",
         "SMILES_IUPAC": "N/A",
+        "Description": "N/A",
         "MF": "N/A",
         "MW": 0.0,
-        "备注": "N/A",
         "Heavy Atom Count": 0,
         "Ring Count": 0,
         "Hydrogen Bond Acceptor Count": 0,
         "Hydrogen Bond Donor Count": 0,
         "Rotatable Bond Count": 0,
-        "Description": "N/A",
         "types of chirality": "N/A",
     }
 
@@ -62,7 +60,10 @@ class Command(BaseCommand):
                     "smiles_iupac": row.get("SMILES_IUPAC", ""),
                     "molecule_formula": row.get("MF", ""),
                     "molecular_weight": float(row.get("MW", 0)),
-                    "description": row.get("Description", ""),
+                    "description": row.get(
+                        "Description",
+                        "Officia voluptate deserunt tempor aliquip labore elit duis anim labore ex irure excepteur. Sit esse qui id ipsum sint aliquip et. Dolor labore eiusmod culpa ad aute sit occaecat dolore velit ut reprehenderit et ut. Ullamco sunt aute minim veniam id deserunt commodo eu occaecat duis qui consectetur incididunt. Sit excepteur laboris mollit Lorem enim. Cupidatat incididunt reprehenderit tempor adipisicing quis ipsum culpa proident sit esse ut.",
+                    ),
                     "heavy_atom_count": int(row.get("Heavy Atom Count", 0)),
                     "ring_count": int(row.get("Ring Count", 0)),
                     "hydrogen_bond_acceptor_count": int(
