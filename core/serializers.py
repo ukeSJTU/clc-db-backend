@@ -15,8 +15,8 @@ class ChiralitySerializer(serializers.ModelSerializer):
 
 
 class MoleculeSerializer(serializers.ModelSerializer):
-    class_type = CategorySerializer(many=True, read_only=True)
-    smiles_type = ChiralitySerializer(many=True, read_only=True)
+    category = CategorySerializer(many=True, read_only=True)
+    chirality = ChiralitySerializer(many=True, read_only=True)
 
     class Meta:
         model = Molecule
