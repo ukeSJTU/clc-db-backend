@@ -1,13 +1,16 @@
 from core.models import Category, Molecule
 from core.views import DefaultPagination
 from django.db.models import Count
-from rest_framework import filters, generics, pagination, viewsets
+from rest_framework import filters, generics, pagination, viewsets, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from .filters import MoleculeFilter
 from django_filters.rest_framework import DjangoFilterBackend
 
 from core.serializers import CategorySerializer, MoleculeSerializer
+
+import time
+import os
 
 
 class OverviewViewSet(viewsets.ReadOnlyModelViewSet):
@@ -153,3 +156,34 @@ class CategoryDistributionViewSet(viewsets.ViewSet):
     def list(self, request):
         distribution_data = self.get_category_distribution()
         return Response(distribution_data)
+
+
+class SDFUploaderViewSet(viewsets.ViewSet):
+    def create(self, request):
+        uploaded_files = request.FILES.getlist("files")
+
+        if not uploaded_files:
+            return Response(
+                {"error": "No files uploaded."}, status=status.HTTP_400_BAD_REQUEST
+            )
+
+        random_folder = str(time.time()).replace(".", "-")
+        os.makedirs(f"cluster/{random_folder}", exist_ok=True)
+
+        # Process and save the uploaded files
+        saved_files = []
+        for file in uploaded_files:
+            # Save the file to a desired location
+
+            file_path = f"cluster/{random_folder}/{file.name}"
+            with open(file_path, "wb") as f:
+                f.write(file.read())
+            saved_files.append(file.name)
+
+        # Log the received files
+        print(f"Received files: {saved_files}")
+
+        return Response(
+            {"message": "Files uploaded successfully", "files": saved_files},
+            status=status.HTTP_200_OK,
+        )

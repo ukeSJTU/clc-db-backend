@@ -23,6 +23,8 @@ router.register(
 )
 router.register(r"categories", CategoryViewSet, basename="category")
 
+router.register(r"cluster/upload/sdf", SDFUploaderViewSet, basename="upload-sdf")
+
 urlpatterns = [
     path("", include(router.urls)),
 ]
