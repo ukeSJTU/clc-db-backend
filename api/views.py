@@ -9,6 +9,8 @@ from django_filters.rest_framework import DjangoFilterBackend
 
 from core.serializers import CategorySerializer, MoleculeSerializer
 
+from .utils import perform_clustering
+
 import time
 import os
 
@@ -168,22 +170,70 @@ class SDFUploaderViewSet(viewsets.ViewSet):
             )
 
         random_folder = str(time.time()).replace(".", "-")
-        os.makedirs(f"cluster/{random_folder}", exist_ok=True)
+        saved_folder = f"cluster/{random_folder}"
+        os.makedirs(f"{saved_folder}", exist_ok=True)
 
         # Process and save the uploaded files
         saved_files = []
         for file in uploaded_files:
             # Save the file to a desired location
-
             file_path = f"cluster/{random_folder}/{file.name}"
             with open(file_path, "wb") as f:
                 f.write(file.read())
-            saved_files.append(file.name)
+            saved_files.append(file_path)
 
         # Log the received files
         print(f"Received files: {saved_files}")
 
         return Response(
-            {"message": "Files uploaded successfully", "files": saved_files},
+            {
+                "message": "Files uploaded successfully",
+                "saved_folder": saved_folder,
+                "files": saved_files,
+            },
             status=status.HTTP_200_OK,
         )
+
+
+class ClusteringViewSet(viewsets.ViewSet):
+    def create(self, request):
+        saved_folder = request.data.get("saved_folder")
+        descriptor = request.data.get("descriptor")
+        bits = int(request.data.get("bits"))
+        radius = float(request.data.get("radius"))
+        rdkit_inv = request.data.get("rdkitInv") == "true"
+        reduction_method = request.data.get("reductionMethod")
+        cluster_method = request.data.get("clusterMethod")
+        clusters = int(request.data.get("clusters"))
+        knn_algro = request.data.get("knnAlgro")
+        eps = float(request.data.get("eps"))
+        min_samples = int(request.data.get("minSamples"))
+
+        if not saved_folder:
+            return Response(
+                {"error": "Saved folder not provided."},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        # Get the list of file paths in the saved folder
+        file_paths = [
+            os.path.join(saved_folder, file_name)
+            for file_name in os.listdir(saved_folder)
+        ]
+
+        # Perform clustering based on the selected options
+        result = perform_clustering(
+            saved_folder,
+            descriptor,
+            bits,
+            radius,
+            rdkit_inv,
+            reduction_method,
+            cluster_method,
+            clusters,
+            knn_algro,
+            eps,
+            min_samples,
+        )
+
+        return Response(result, status=status.HTTP_200_OK)
