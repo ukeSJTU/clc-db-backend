@@ -2,7 +2,6 @@ import numpy as np
 from sklearn.manifold import TSNE
 from sklearn.decomposition import PCA
 from sklearn.cluster import KMeans, DBSCAN
-import numpy as np
 
 
 def embedding(fprint: np.array, method="PCA", random_state=33):
