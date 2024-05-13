@@ -1,6 +1,9 @@
 .vscode/
 data/
 
+# ignore cluster folder
+cluster/
+
 # ignore static folders
 static/
 static-assets/
