@@ -12,13 +12,13 @@ class MoleculeFilter(django_filters.FilterSet):
         field_name="cas_id", method="filter_cas_ids_starts_with"
     )
     smiles = django_filters.CharFilter(field_name="smiles", method="smiles_search")
-    class_type = django_filters.CharFilter(
-        field_name="class_type__name", lookup_expr="icontains"
+    category = django_filters.CharFilter(
+        field_name="category__name", lookup_expr="icontains"
     )
 
     class Meta:
         model = Molecule
-        fields = ["name", "cas_id", "smiles", "class_type"]
+        fields = ["name", "cas_id", "smiles", "category"]
 
     def filter_cas_ids(self, queryset, name, value):
         cas_ids = [cas_id.strip() for cas_id in value.split(",")]
