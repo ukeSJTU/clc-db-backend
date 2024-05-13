@@ -1,6 +1,6 @@
 from core.models import Category, Molecule
 from core.views import DefaultPagination
-from django.db.models import Prefetch
+from django.db.models import Count
 from rest_framework import filters, generics, pagination, viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -127,13 +127,10 @@ class WeightDistributionViewSet(viewsets.ViewSet):
         return Response(self.weight_distribution())
 
 
-from django.db.models import Count
-
-
-class SmileTypeDistributionViewSet(viewsets.ViewSet):
-    def get_smile_type_distribution(self):
+class ChiralityDistributionViewSet(viewsets.ViewSet):
+    def get_chirality_distribution(self):
         distribution_data = list(
-            Molecule.objects.values("smiles_type__smile")
+            Molecule.objects.values("chirality__name")
             .annotate(count=Count("id"))
             .order_by()
         )
@@ -141,18 +138,18 @@ class SmileTypeDistributionViewSet(viewsets.ViewSet):
         return distribution_data
 
     def list(self, request):
-        return Response(self.get_smile_type_distribution())
+        return Response(self.get_chirality_distribution())
 
 
-class ClassTypeDistributionViewSet(viewsets.ViewSet):
-    def get_class_type_distribution(self):
+class CategoryDistributionViewSet(viewsets.ViewSet):
+    def get_category_distribution(self):
         distribution_data = list(
-            Molecule.objects.values("class_type__name")
+            Molecule.objects.values("category__name")
             .annotate(count=Count("id"))
             .order_by()
         )
         return distribution_data
 
     def list(self, request):
-        distribution_data = self.get_class_type_distribution()
+        distribution_data = self.get_category_distribution()
         return Response(distribution_data)
