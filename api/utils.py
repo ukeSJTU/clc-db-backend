@@ -1,5 +1,3 @@
-# utils.py
-
 import os
 import numpy as np
 from e3fp.pipeline import fprints_from_sdf, mol_from_sdf
@@ -23,7 +21,6 @@ def perform_clustering(
 ):
     fprint_list = []
     id_list = []
-
     for file_name in os.listdir(saved_folder):
         file_path = os.path.join(saved_folder, file_name)
         if os.path.isfile(file_path) and file_name.endswith(".sdf"):
@@ -69,9 +66,8 @@ def perform_clustering(
 
     # Prepare the clustering results as JSON data
     result = {
-        "coordinates": coords_with_id_list,  # .tolist(),
-        "class_numbers": list(class_num),  # .tolist(),
+        "coordinates": [coords.tolist() for coords in coords_with_id_list],
+        "class_numbers": list(class_num),
         "ids": id_list,
     }
-
     return result

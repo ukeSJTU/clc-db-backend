@@ -36,7 +36,6 @@ def cluster(features, id, method, params):
             [
                 features[np.where(y == i)],
                 np.array(id)[np.where(y == i)].reshape([-1, 1]),
-                # np.array(img_list)[np.where(y == i)].reshape([-1, 1]),
             ],
             axis=-1,
         )
