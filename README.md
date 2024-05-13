@@ -17,3 +17,5 @@ python manage.py makemigrations
 python manage.py migrate
 python manage.py load_molecules -p /ChemNexus/data/merged.csv
 ```
+
+https://stackoverflow.com/questions/52547833/getting-importerror-libxrender-so-1-cannot-open-shared-object-file-when-impo
