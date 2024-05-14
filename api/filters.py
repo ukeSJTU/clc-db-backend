@@ -13,7 +13,7 @@ class MoleculeFilter(django_filters.FilterSet):
     )
     smiles = django_filters.CharFilter(field_name="smiles", method="smiles_search")
     category = django_filters.CharFilter(
-        field_name="category__name", lookup_expr="icontains"
+        field_name="category__name", lookup_expr="iexact"
     )
 
     class Meta:
