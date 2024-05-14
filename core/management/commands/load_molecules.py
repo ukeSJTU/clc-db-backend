@@ -35,7 +35,7 @@ class Command(BaseCommand):
         # Create or get categories and chirality types from the dataframe
         category_objs = {}
         for category_list in df["Category"].unique():
-            categories = [cat.strip() for cat in category_list.split("、")]
+            categories = [cat.strip() for cat in category_list.split(",")]
             for category in categories:
                 if category not in category_objs:
                     category_objs[category], _ = Category.objects.get_or_create(
