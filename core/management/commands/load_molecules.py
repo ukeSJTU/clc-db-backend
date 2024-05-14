@@ -5,19 +5,18 @@ import pandas as pd
 
 class Command(BaseCommand):
     help = "Load molecule data into the database"
-
     fill_values = {
         "PubChem CID": 0,
         "SMILES": "N/A",
         "SMILES_IUPAC": "N/A",
-        "Description": "N/A",
+        "Description": "Officia mollit laborum esse cupidatat enim laboris in aliqua excepteur officia ad quis. Dolore incididunt ad fugiat elit fugiat anim occaecat consequat duis labore. Sunt ullamco est esse qui consectetur qui magna ipsum non reprehenderit sint voluptate aute cillum. Voluptate sunt in ea laboris officia.",
         "MF": "N/A",
         "MW": 0.0,
-        "Heavy Atom Count": 0,
-        "Ring Count": 0,
-        "Hydrogen Bond Acceptor Count": 0,
-        "Hydrogen Bond Donor Count": 0,
-        "Rotatable Bond Count": 0,
+        "Heavy Atom Count": -1,  # Use -1 for properties that can't be calculated
+        "Ring Count": -1,
+        "Hydrogen Bond Acceptor Count": -1,
+        "Hydrogen Bond Donor Count": -1,
+        "Rotatable Bond Count": -1,
         "types of chirality": "N/A",
     }
 
@@ -62,17 +61,32 @@ class Command(BaseCommand):
                     "molecular_weight": float(row.get("MW", 0)),
                     "description": row.get(
                         "Description",
-                        "Officia mollit laborum esse cupidatat enim laboris in aliqua excepteur officia ad quis. Dolore incididunt ad fugiat elit fugiat anim occaecat consequat duis labore. Sunt ullamco est esse qui consectetur qui magna ipsum non reprehenderit sint voluptate aute cillum. Voluptate sunt in ea laboris officia.",
                     ),
-                    "heavy_atom_count": int(row.get("Heavy Atom Count", 0)),
-                    "ring_count": int(row.get("Ring Count", 0)),
-                    "hydrogen_bond_acceptor_count": int(
-                        row.get("Hydrogen Bond Acceptor Count", 0)
+                    "heavy_atom_count": (
+                        int(row.get("Heavy Atom Count", -1))
+                        if row.get("Heavy Atom Count", -1) != -1
+                        else None
+                    ),  # Use None for properties that can't be calculated
+                    "ring_count": (
+                        int(row.get("Ring Count", -1))
+                        if row.get("Ring Count", -1) != -1
+                        else None
                     ),
-                    "hydrogen_bond_donor_count": int(
-                        row.get("Hydrogen Bond Donor Count", 0)
+                    "hydrogen_bond_acceptor_count": (
+                        int(row.get("Hydrogen Bond Acceptor Count", -1))
+                        if row.get("Hydrogen Bond Acceptor Count", -1) != -1
+                        else None
                     ),
-                    "rotatable_bond_count": int(row.get("Rotatable Bond Count", 0)),
+                    "hydrogen_bond_donor_count": (
+                        int(row.get("Hydrogen Bond Donor Count", -1))
+                        if row.get("Hydrogen Bond Donor Count", -1) != -1
+                        else None
+                    ),
+                    "rotatable_bond_count": (
+                        int(row.get("Rotatable Bond Count", -1))
+                        if row.get("Rotatable Bond Count", -1) != -1
+                        else None
+                    ),
                 },
             )
 
@@ -86,7 +100,6 @@ class Command(BaseCommand):
                 molecule.chirality.set([chirality_objs[chirality]])
 
             molecule.save()
-
             self.stdout.write(
                 self.style.SUCCESS(
                     f"Successfully added/updated molecule: {molecule.name}"
