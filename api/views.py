@@ -13,6 +13,7 @@ from .utils import perform_clustering
 
 import time
 import os
+import shutil
 
 
 class OverviewViewSet(viewsets.ReadOnlyModelViewSet):
@@ -215,11 +216,21 @@ class ClusteringViewSet(viewsets.ViewSet):
                 status=status.HTTP_400_BAD_REQUEST,
             )
 
-        # Get the list of file paths in the saved folder
-        file_paths = [
-            os.path.join(saved_folder, file_name)
-            for file_name in os.listdir(saved_folder)
-        ]
+        # Set default values for RDKit-related parameters if descriptor is "E3FP"
+        if descriptor == "E3FP":
+            rdkit_radius = 2
+            rdkit_use_features = False
+            rdkit_use_bond_types = False
+            rdkit_use_chirality = False
+        else:
+            rdkit_radius = int(request.data.get("rdkitRadius", 2))
+            rdkit_use_features = request.data.get("rdkitUseFeatures", "false") == "true"
+            rdkit_use_bond_types = (
+                request.data.get("rdkitUseBondTypes", "false") == "true"
+            )
+            rdkit_use_chirality = (
+                request.data.get("rdkitUseChirality", "false") == "true"
+            )
 
         # Perform clustering based on the selected options
         result = perform_clustering(
@@ -228,6 +239,10 @@ class ClusteringViewSet(viewsets.ViewSet):
             bits,
             radius,
             rdkit_inv,
+            rdkit_radius,
+            rdkit_use_features,
+            rdkit_use_bond_types,
+            rdkit_use_chirality,
             reduction_method,
             cluster_method,
             clusters,
@@ -235,5 +250,11 @@ class ClusteringViewSet(viewsets.ViewSet):
             eps,
             min_samples,
         )
+
+        # Remove the saved folder to free up disk space
+        try:
+            shutil.rmtree(saved_folder)
+        except OSError as e:
+            print(f"Error: {saved_folder} : {e.strerror}")
 
         return Response(result, status=status.HTTP_200_OK)

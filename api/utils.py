@@ -12,6 +12,10 @@ def perform_clustering(
     bits,
     radius,
     rdkit_inv,
+    rdkit_radius,
+    rdkit_use_features,
+    rdkit_use_bond_types,
+    rdkit_use_chirality,
     reduction_method,
     cluster_method,
     clusters,
@@ -39,11 +43,11 @@ def perform_clustering(
                 elif descriptor == "RDKit":
                     vector = AllChem.GetMorganFingerprintAsBitVect(
                         mol,
-                        radius=int(radius),
+                        radius=rdkit_radius,
                         nBits=bits,
-                        useFeatures=True if rdkit_inv else False,
-                        useBondTypes=True if rdkit_inv else False,
-                        useChirality=True if rdkit_inv else False,
+                        useFeatures=rdkit_use_features,
+                        useBondTypes=rdkit_use_bond_types,
+                        useChirality=rdkit_use_chirality,
                     )
                 fprint_list.append(vector)
                 id = os.path.splitext(file_name)[0]
