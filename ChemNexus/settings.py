@@ -131,3 +131,5 @@ STATICFILES_DIRS = [BASE_DIR / "static-assets"]
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 CORS_ALLOW_ALL_ORIGINS = True
+
+DATA_UPLOAD_MAX_NUMBER_FILES = 500
