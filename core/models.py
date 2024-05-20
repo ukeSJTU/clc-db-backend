@@ -32,6 +32,7 @@ class Molecule(models.Model):
         Category, related_name="molecules"
     )  # category of the molecule
 
+    url = models.URLField(blank=True, null=True)
     pubchem_url = models.URLField(
         blank=True, null=True
     )  # https://pubchem.ncbi.nlm.nih.gov/compound/46939810

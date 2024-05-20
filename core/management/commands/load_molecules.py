@@ -54,6 +54,7 @@ class Command(BaseCommand):
                 defaults={
                     "name": row["Name"],
                     "pubchem_cid": str(int(row.get("PubChem CID", 0))),
+                    "url": row.get("URL", ""),
                     "pubchem_url": row.get("PubChemURL", ""),
                     "smiles": row.get("SMILES", ""),
                     "smiles_iupac": row.get("SMILES_IUPAC", ""),
