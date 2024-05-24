@@ -258,3 +258,41 @@ class ClusteringViewSet(viewsets.ViewSet):
             print(f"Error: {saved_folder} : {e.strerror}")
 
         return Response(result, status=status.HTTP_200_OK)
+
+    @action(detail=False, methods=["post"])
+    def example(self, request):
+        # Set the path to the predefined example SDF files
+        example_folder = "../../cluster/"
+
+        # Set default parameters for the example
+        descriptor = "E3FP"
+        bits = 1024
+        radius = 1.5
+        rdkit_inv = True
+        reduction_method = "PCA"
+        cluster_method = "KNN"
+        clusters = 5
+        knn_algro = "lloyd"
+        eps = 0.25
+        min_samples = 5
+
+        # Perform clustering using the example SDF files and default parameters
+        result = perform_clustering(
+            example_folder,
+            descriptor,
+            bits,
+            radius,
+            rdkit_inv,
+            2,  # rdkit_radius
+            False,  # rdkit_use_features
+            False,  # rdkit_use_bond_types
+            False,  # rdkit_use_chirality
+            reduction_method,
+            cluster_method,
+            clusters,
+            knn_algro,
+            eps,
+            min_samples,
+        )
+
+        return Response(result, status=status.HTTP_200_OK)
