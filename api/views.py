@@ -262,7 +262,8 @@ class ClusteringViewSet(viewsets.ViewSet):
     @action(detail=False, methods=["post"])
     def example(self, request):
         # Set the path to the predefined example SDF files
-        example_folder = "../../cluster/"
+        example_folder = os.path.expanduser("~/Desktop/ChemNexus/cluster/")
+        example_type = request.data.get("example_type", "default")
 
         # Set default parameters for the example
         descriptor = "E3FP"
@@ -275,6 +276,19 @@ class ClusteringViewSet(viewsets.ViewSet):
         knn_algro = "lloyd"
         eps = 0.25
         min_samples = 5
+
+        if example_type == "default":
+            descriptor = "E3FP"
+            # ... (existing default parameters)
+        elif example_type == "knn":
+            descriptor = "RDKit"
+            cluster_method = "KNN"
+            # ... (set other parameters for KNN example)
+        else:
+            return Response(
+                {"error": "Invalid example type."},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
 
         # Perform clustering using the example SDF files and default parameters
         result = perform_clustering(
