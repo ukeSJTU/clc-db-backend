@@ -271,7 +271,7 @@ class ClusteringViewSet(viewsets.ViewSet):
         radius = 1.5
         rdkit_inv = True
         reduction_method = "PCA"
-        cluster_method = "KNN"
+        cluster_method = "K-Means"
         clusters = 5
         knn_algro = "lloyd"
         eps = 0.25
@@ -282,8 +282,8 @@ class ClusteringViewSet(viewsets.ViewSet):
             # ... (existing default parameters)
         elif example_type == "knn":
             descriptor = "RDKit"
-            cluster_method = "KNN"
-            # ... (set other parameters for KNN example)
+            cluster_method = "K-Means"
+            # ... (set other parameters for K-Means example)
         else:
             return Response(
                 {"error": "Invalid example type."},

@@ -16,7 +16,7 @@ def embedding(fprint: np.array, method="PCA", random_state=33):
 
 
 def cluster(features, id, method, params):
-    if method == "KNN":
+    if method == "K-Means":
         km = KMeans(
             n_clusters=params["n_cluster"],
             algorithm=params["knn_algro"],
