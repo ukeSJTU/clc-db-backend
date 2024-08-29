@@ -64,6 +64,16 @@ class Molecule(models.Model):
 
     molecular_weight = models.FloatField(blank=True, null=True)  # 330.364
 
+    InChI = models.TextField(
+        blank=True,
+        null=True,
+    )
+
+    InChIKey = models.TextField(
+        blank=True,
+        null=True,
+    )
+
     # Calculated statistics
     heavy_atom_count = models.IntegerField(blank=True, null=True)  # 23
     ring_count = models.IntegerField(blank=True, null=True)  # 2

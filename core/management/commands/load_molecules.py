@@ -18,6 +18,8 @@ class Command(BaseCommand):
         "Hydrogen Bond Donor Count": -1,
         "Rotatable Bond Count": -1,
         "types of chirality": "N/A",
+        "InChI": "N/A",
+        "InChIKey": "N/A",
     }
 
     def add_arguments(self, parser):
@@ -63,6 +65,8 @@ class Command(BaseCommand):
                     "description": row.get(
                         "Description",
                     ),
+                    "InChI": row.get("InChI"),
+                    "InChIKey": row.get("InChIKey"),
                     "heavy_atom_count": (
                         int(row.get("Heavy Atom Count", -1))
                         if row.get("Heavy Atom Count", -1) != -1
